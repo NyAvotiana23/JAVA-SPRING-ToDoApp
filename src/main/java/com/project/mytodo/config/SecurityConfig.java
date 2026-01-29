@@ -39,9 +39,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Permit all for auth endpoints
                         .requestMatchers("/auth/**").permitAll()
-//                        .requestMatchers("/categories/**").permitAll()
-//                        .requestMatchers("/rallyes/**").hasAnyRole("USER", "ADMIN")
-                        
+
+                        // Todo API endpoints - require authentication
+                        .requestMatchers("/api/todos/**").authenticated()
+                        .requestMatchers("/api/categories/**").authenticated()
+                        .requestMatchers("/api/todo-details/**").authenticated()
+                        .requestMatchers("/api/statuts/**").authenticated()
+                        .requestMatchers("/api/detail-statuts/**").authenticated()
+
                         // All other requests require authentication (but no specific role)
                         .anyRequest().authenticated()
                 )

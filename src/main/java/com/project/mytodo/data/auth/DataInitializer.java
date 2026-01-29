@@ -8,6 +8,7 @@ import com.project.mytodo.repositories.auth.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class DataInitializer {
 
     @Bean
+    @Order(1) // Execute first before ToDo data initializer
     public CommandLineRunner initData(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // Create roles if they don't exist
