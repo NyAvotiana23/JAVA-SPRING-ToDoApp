@@ -8,6 +8,7 @@ import com.project.mytodo.repositories.auth.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
+@Profile({"dev", "test"}) // Only run in dev and test environments, not in production
 public class DataInitializer {
 
     @Bean
