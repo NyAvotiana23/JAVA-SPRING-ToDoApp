@@ -1,0 +1,40 @@
+ToDoCategorie :
+    id
+    id_user
+    nom
+    color
+
+ToDoStatut :
+    id
+    statut
+    socre
+    span_html
+
+ToDoDetailStatut :
+    id
+    statut
+    socre
+    span_html
+
+
+ToDo :
+    id
+    id_user
+    id_categorie
+    id_statut
+    titre
+    description
+    date_creation
+    date_echeance
+
+ToDoDetail :
+    id
+    id_todo
+    id_statut_detail
+    tache
+    heure_debut
+    heure_fin
+    priorite
+    avancement
+
+
