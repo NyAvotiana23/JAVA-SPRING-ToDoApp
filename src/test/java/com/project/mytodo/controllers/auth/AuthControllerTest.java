@@ -60,8 +60,8 @@ class AuthControllerTest {
         adminRole = roleRepository.save(new Role("ADMIN"));
     }
 
-    private void createTestUser(String username, String password, Set<Role> roles) {
-        User user = new User(username, passwordEncoder.encode(password), roles);
+    private void createTestUser(String email, String password, Set<Role> roles) {
+        User user = new User(email, passwordEncoder.encode(password), roles);
         userRepository.save(user);
     }
 
@@ -75,17 +75,17 @@ class AuthControllerTest {
             // Given
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
-            createTestUser("testuser", "password123", roles);
+            createTestUser("testuser@example.com", "password123", roles);
 
             // When - Direct authentication test
             var authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken("testuser", "password123")
+                    new UsernamePasswordAuthenticationToken("testuser@example.com", "password123")
             );
 
             // Then
             assertThat(authentication).isNotNull();
             assertThat(authentication.isAuthenticated()).isTrue();
-            assertThat(authentication.getName()).isEqualTo("testuser");
+            assertThat(authentication.getName()).isEqualTo("testuser@example.com");
         }
 
         @Test
@@ -94,11 +94,11 @@ class AuthControllerTest {
             // Given
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
-            createTestUser("testuser", "password123", roles);
+            createTestUser("testuser@example.com", "password123", roles);
 
             // When/Then
             assertThatThrownBy(() -> authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken("testuser", "wrongpassword")
+                    new UsernamePasswordAuthenticationToken("testuser@example.com", "wrongpassword")
             )).isInstanceOf(BadCredentialsException.class);
         }
 
@@ -107,7 +107,7 @@ class AuthControllerTest {
         void shouldFailLoginWithNonExistentUser() {
             // When/Then
             assertThatThrownBy(() -> authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken("nonexistent", "password123")
+                    new UsernamePasswordAuthenticationToken("nonexistent@example.com", "password123")
             )).isInstanceOf(BadCredentialsException.class);
         }
 
@@ -118,11 +118,11 @@ class AuthControllerTest {
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
             roles.add(adminRole);
-            createTestUser("adminuser", "password123", roles);
+            createTestUser("adminuser@example.com", "password123", roles);
 
             // When
             var authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken("adminuser", "password123")
+                    new UsernamePasswordAuthenticationToken("adminuser@example.com", "password123")
             );
 
             // Then
@@ -142,16 +142,16 @@ class AuthControllerTest {
         @DisplayName("Should generate valid JWT token")
         void shouldGenerateValidToken() {
             // Given
-            String username = "testuser";
+            String email = "testuser@example.com";
 
             // When
-            String token = jwtUtil.generateToken(username);
+            String token = jwtUtil.generateToken(email);
 
             // Then
             assertThat(token).isNotNull();
             assertThat(token).isNotEmpty();
             assertThat(jwtUtil.validateToken(token)).isTrue();
-            assertThat(jwtUtil.extractUsername(token)).isEqualTo(username);
+            assertThat(jwtUtil.extractUsername(token)).isEqualTo(email);
         }
 
         @Test
@@ -170,26 +170,26 @@ class AuthControllerTest {
     class UserRepositoryTests {
 
         @Test
-        @DisplayName("Should find user by username")
-        void shouldFindUserByUsername() {
+        @DisplayName("Should find user by email")
+        void shouldFindUserByEmail() {
             // Given
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
-            createTestUser("findme", "password123", roles);
+            createTestUser("findme@example.com", "password123", roles);
 
             // When
-            User found = userRepository.findByUsername("findme");
+            User found = userRepository.findByEmail("findme@example.com");
 
             // Then
             assertThat(found).isNotNull();
-            assertThat(found.getUsername()).isEqualTo("findme");
+            assertThat(found.getEmail()).isEqualTo("findme@example.com");
         }
 
         @Test
-        @DisplayName("Should return null for non-existent username")
+        @DisplayName("Should return null for non-existent email")
         void shouldReturnNullForNonExistentUser() {
             // When
-            User found = userRepository.findByUsername("notexist");
+            User found = userRepository.findByEmail("notexist@example.com");
 
             // Then
             assertThat(found).isNull();
@@ -201,10 +201,10 @@ class AuthControllerTest {
             // Given
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
-            createTestUser("passtest", "mypassword", roles);
+            createTestUser("passtest@example.com", "mypassword", roles);
 
             // When
-            User found = userRepository.findByUsername("passtest");
+            User found = userRepository.findByEmail("passtest@example.com");
 
             // Then
             assertThat(found).isNotNull();
@@ -218,19 +218,19 @@ class AuthControllerTest {
     class SignupTests {
 
         @Test
-        @DisplayName("Should not allow duplicate usernames")
-        void shouldNotAllowDuplicateUsernames() {
+        @DisplayName("Should not allow duplicate emails")
+        void shouldNotAllowDuplicateEmails() {
             // Given
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
-            createTestUser("existinguser", "password123", roles);
+            createTestUser("existinguser@example.com", "password123", roles);
 
             // When
-            User existing = userRepository.findByUsername("existinguser");
+            User existing = userRepository.findByEmail("existinguser@example.com");
 
             // Then
             assertThat(existing).isNotNull();
-            assertThat(existing.getUsername()).isEqualTo("existinguser");
+            assertThat(existing.getEmail()).isEqualTo("existinguser@example.com");
         }
 
         @Test
@@ -240,11 +240,11 @@ class AuthControllerTest {
             Set<Role> roles = new HashSet<>();
             roles.add(managerRole);
 
-            User newUser = new User("newuser", passwordEncoder.encode("password123"), roles);
+            User newUser = new User("newuser@example.com", passwordEncoder.encode("password123"), roles);
             userRepository.save(newUser);
 
             // When
-            User found = userRepository.findByUsername("newuser");
+            User found = userRepository.findByEmail("newuser@example.com");
 
             // Then
             assertThat(found).isNotNull();
@@ -260,11 +260,11 @@ class AuthControllerTest {
             roles.add(managerRole);
             roles.add(adminRole);
 
-            User newUser = new User("multirole", passwordEncoder.encode("password123"), roles);
+            User newUser = new User("multirole@example.com", passwordEncoder.encode("password123"), roles);
             userRepository.save(newUser);
 
             // When
-            User found = userRepository.findByUsername("multirole");
+            User found = userRepository.findByEmail("multirole@example.com");
 
             // Then
             assertThat(found).isNotNull();

@@ -36,11 +36,11 @@ INSERT INTO roles (id, name) VALUES
 -- USERS
 -- Mot de passe encodé BCrypt pour: "password123"
 -- =============================================
-INSERT INTO users (id, username, password) VALUES
-(1, 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G'),
-(2, 'john_doe', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G'),
-(3, 'jane_smith', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G'),
-(4, 'bob_wilson', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G');
+INSERT INTO users (id, email, password) VALUES
+(1, 'admin@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G'),
+(2, 'john_doe@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G'),
+(3, 'jane_smith@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G'),
+(4, 'bob_wilson@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.rsJ9HVlhIbOxPMC9.G');
 
 -- =============================================
 -- USER_ROLES (Association utilisateurs-rôles)

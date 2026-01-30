@@ -1,6 +1,7 @@
 package com.project.mytodo.entities.auth;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email(message = "Email should be valid")
     @Column(unique = true, nullable = false)
-    private String username;
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -35,8 +37,8 @@ public class User implements UserDetails {
     // Constructors
     public User() {}
 
-    public User(String username, String password, Set<Role> roles) {
-        this.username = username;
+    public User(String email, String password, Set<Role> roles) {
+        this.email = email;
         this.password = password;
         this.roles = roles;
     }
@@ -50,12 +52,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -74,7 +76,12 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    // UserDetails methods
+    // UserDetails methods - getUsername returns email for Spring Security
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()

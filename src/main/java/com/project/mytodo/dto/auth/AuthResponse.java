@@ -13,6 +13,6 @@ public class AuthResponse {
     private boolean success;
     private String message;
     private String token;
-    private String username;
+    private String email;
     private java.util.List<String> roles;
 }

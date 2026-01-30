@@ -41,7 +41,7 @@ public class ToDoDataInitializer {
             ToDoDetailStatut detailStatutBloque = createDetailStatutIfNotExists(detailStatutRepository, "Bloqué", 25, "<span class=\"badge bg-warning\">Bloqué</span>");
 
             // Get sample user
-            User user = userRepository.findByUsername("user");
+            User user = userRepository.findByEmail("user@example.com");
             if (user != null) {
                 // Create Categories for user if they don't exist
                 ToDoCategorie categorieTravail = createCategorieIfNotExists(categorieRepository, user, "Travail", "#3498db");
@@ -119,7 +119,7 @@ public class ToDoDataInitializer {
             }
 
             // Get admin user and create some data for them too
-            User admin = userRepository.findByUsername("admin");
+            User admin = userRepository.findByEmail("admin@example.com");
             if (admin != null) {
                 createCategorieIfNotExists(categorieRepository, admin, "Administration", "#e67e22");
                 createCategorieIfNotExists(categorieRepository, admin, "Projets", "#1abc9c");

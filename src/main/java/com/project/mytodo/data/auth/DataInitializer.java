@@ -37,17 +37,17 @@ public class DataInitializer {
             }
 
             // Create sample users if they don't exist
-            if (userRepository.findByUsername("user") == null) {
+            if (userRepository.findByEmail("user@example.com") == null) {
                 Set<Role> userRoles = new HashSet<>();
                 userRoles.add(userRole);
-                User user = new User("user", passwordEncoder.encode("userpass123"), userRoles);
+                User user = new User("user@example.com", passwordEncoder.encode("userpass123"), userRoles);
                 userRepository.save(user);
             }
 
-            if (userRepository.findByUsername("admin") == null) {
+            if (userRepository.findByEmail("admin@example.com") == null) {
                 Set<Role> adminRoles = new HashSet<>();
                 adminRoles.add(adminRole);
-                User admin = new User("admin", passwordEncoder.encode("userpass123"), adminRoles);
+                User admin = new User("admin@example.com", passwordEncoder.encode("userpass123"), adminRoles);
                 userRepository.save(admin);
             }
         };
